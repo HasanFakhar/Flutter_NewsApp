@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:news_app/pages/home.dart';
+import 'package:news_app/pages/chat_screen.dart';
+import 'package:news_app/services/news.dart';
+import 'package:news_app/services/slider_data.dart';
+import 'package:news_app/models/article_model.dart';
+import 'package:news_app/models/slider_model.dart';
 
 class LandingPage extends StatefulWidget {
   const LandingPage({super.key});
@@ -9,6 +14,32 @@ class LandingPage extends StatefulWidget {
 }
 
 class _LandingPageState extends State<LandingPage> {
+  List<ArticleModel> _articles = [];
+  List<SliderModel> _sliders = [];
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadNews();
+  }
+
+  Future<void> _loadNews() async {
+    final newsService = News();
+    final slidersService = Sliders();
+    
+    await Future.wait([
+      newsService.getNews(),
+      slidersService.getSliders(),
+    ]);
+
+    setState(() {
+      _articles = newsService.news;
+      _sliders = slidersService.sliders;
+      _isLoading = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,7 +97,54 @@ class _LandingPageState extends State<LandingPage> {
                   ),
                 ),
               ),
-            )
+            ),
+            SizedBox(height: 20,),
+            Container(
+              width: MediaQuery.of(context).size.width/1.2,
+              child: Material(
+                borderRadius: BorderRadius.circular(30),
+                elevation: 5,
+                child: InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ChatScreen(
+                          apiKey: '', // Replace with your Gemini API key
+                          articles: _articles,
+                          sliders: _sliders,
+                        ),
+                      ),
+                    );
+                  },
+                  child: Container(
+                    width: MediaQuery.of(context).size.width/1.2,
+                    padding: EdgeInsets.symmetric(vertical: 15),
+                    decoration: BoxDecoration(
+                      color: Colors.green,
+                      borderRadius: BorderRadius.circular(30)
+                    ),
+                    child: Center(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.chat, color: Colors.white),
+                          SizedBox(width: 8),
+                          Text(
+                            'Chat with News Assistant',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 17,
+                              fontWeight: FontWeight.w500
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),
