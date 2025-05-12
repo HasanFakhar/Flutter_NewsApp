@@ -5,6 +5,7 @@ import 'package:news_app/models/slider_model.dart';
 class Sliders {
   List<SliderModel> sliders = [];
   
+  
   Future<void> getSliders() async {
     try {
       String url = 'https://newsapi.org/v2/top-headlines?sources=techcrunch&apiKey=02076782d78840d88393548bdec22a95';

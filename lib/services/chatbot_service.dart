@@ -14,6 +14,7 @@ class ChatbotService {
   List<ShowModel> _categoryArticles = [];
   final List<Content> _chatHistory = [];
 
+
   ChatbotService({required String apiKey}) 
       : _model = GenerativeModel(
           model: 'gemini-2.0-flash',

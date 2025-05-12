@@ -2,6 +2,7 @@ import 'package:news_app/models/category_model.dart';
 
 List<CategoryModel> getCategories(){
 
+
   List<CategoryModel> category=[];
 
   CategoryModel categoryModel= new CategoryModel('Business','images/business.jpg');

@@ -5,6 +5,8 @@ import 'package:news_app/models/slider_model.dart';
 import '../models/show_category.dart';
 
 class ShowCategoryNews{
+
+  
   List<ShowModel> categories = [];
 
   Future<void> getCategoryNews(String category) async {
